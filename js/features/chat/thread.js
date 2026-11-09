@@ -2,6 +2,7 @@
 import { config } from '../../../config/app.js';
 import { h, icon, replace, toast } from '../../core/dom.js';
 import { openSearch } from './search.js';
+import { openReactionSheet } from './reaction-sheet.js';
 import { dayLabel, sameDay } from '../../core/format.js';
 import { preparePhoto } from '../../core/image.js';
 import { avatar } from '../ui/avatar.js';
@@ -45,6 +46,11 @@ export function createThread({ backend, me, people, onBack, onActivity }) {
         onRetry: () => deliver(item),
         reactions: reactions.get(item.message.id) || [], myId: me.id, isNew: item.fresh,
         onToggleReaction: (emoji) => toggleReaction(item.message.id, emoji),
+        onOpenReactions: () => openReactionSheet({
+          reactions: reactions.get(item.message.id) || [], myId: me.id,
+          nameOf: (id) => byId.get(id)?.name || 'בן משפחה',
+          onPick: (emoji) => toggleReaction(item.message.id, emoji),
+        }),
       }));
       item.fresh = false;
     });
@@ -63,13 +69,14 @@ export function createThread({ backend, me, people, onBack, onActivity }) {
 
   async function toggleReaction(messageId, emoji) {
     const current = reactions.get(messageId) || [];
-    const mine = current.some((r) => r.user_id === me.id && r.emoji === emoji);
-    reactions.set(messageId, mine
-      ? current.filter((r) => !(r.user_id === me.id && r.emoji === emoji))
-      : [...current, { message_id: messageId, user_id: me.id, emoji }]);
+    const previous = current.filter((r) => r.user_id === me.id);
+    const others = current.filter((r) => r.user_id !== me.id);
+    const same = previous.some((r) => r.emoji === emoji);
+    reactions.set(messageId, same ? others : [...others, { message_id: messageId, user_id: me.id, emoji }]);
     render();
     try {
-      await (mine ? backend.removeReaction(messageId, me.id, emoji) : backend.addReaction(messageId, emoji));
+      await Promise.all(previous.map((r) => backend.removeReaction(messageId, me.id, r.emoji)));
+      if (!same) await backend.addReaction(messageId, emoji);
       backend.sendReactionPing(messageId);
     } catch (error) {
       console.error(error);

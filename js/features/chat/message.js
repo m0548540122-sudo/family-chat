@@ -1,5 +1,4 @@
 // Draws one message. Text is inserted only as text, and only safe image types are shown inline.
-import { quickReactions } from '../../../config/emojis.js';
 import { h, icon } from '../../core/dom.js';
 import { fileSize, isPhoto, splitLinks, time } from '../../core/format.js';
 import { avatar } from '../ui/avatar.js';
@@ -41,24 +40,20 @@ function reactionsRow(reactions, myId, onToggle) {
   }, emoji, users.length > 1 && h('span', {}, users.length))));
 }
 
-function reactionMenu(onToggle) {
-  const menu = h('div', { class: 'react-menu', hidden: true }, quickReactions.map((emoji) =>
-    h('button', { 'aria-label': emoji, onclick: () => { menu.hidden = true; onToggle(emoji); } }, emoji)));
-  const open = h('button', { class: 'react-open', 'aria-label': 'הוספת תגובה', onclick: () => { menu.hidden = !menu.hidden; } }, icon('smile'));
-  return h('div', { class: 'react-wrap' }, open, menu);
-}
-
-export function messageView({ message, sender, mine, first, status, backend, onRetry, reactions = [], myId, onToggleReaction, isNew }) {
+export function messageView({ message, sender, mine, first, status, backend, onRetry, reactions = [], myId, onToggleReaction, onOpenReactions, isNew }) {
   const classes = ['msg', mine && 'mine', first && 'first', status === 'failed' && 'failed', isNew && 'new'].filter(Boolean).join(' ');
   const meta = status === 'sending' ? 'שולח…'
     : status === 'failed' ? h('button', { class: 'retry', onclick: onRetry }, 'לא נשלח. לנסות שוב')
       : time(message.created_at);
   return h('div', { class: classes, 'data-id': message.id },
     !mine && h('div', { class: 'avatar-slot' }, first && avatar(sender, 34)),
-    h('div', { class: 'bubble' },
+    h('div', {
+      class: `bubble ${status ? '' : 'can-react'}`,
+      onclick: (event) => { if (!status && !event.target.closest('a, button, img.photo') && !getSelection().toString()) onOpenReactions(); },
+    },
       !mine && first && h('div', { class: 'sender' }, sender?.name || 'בן משפחה'),
       attachment(message, backend), bodyNode(message.body),
       h('div', { class: 'meta' }, meta),
       reactionsRow(reactions, myId, onToggleReaction)),
-    !status && reactionMenu(onToggleReaction));
+    !status && h('button', { class: 'react-open', 'aria-label': 'תגובה באימוג\'י', onclick: onOpenReactions }, icon('smile')));
 }
