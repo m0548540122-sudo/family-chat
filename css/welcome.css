@@ -1,0 +1,12 @@
+.welcome { position: relative; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: flex-start; padding: var(--s5); }
+.welcome-scene { position: absolute; inset: 0; }
+.welcome-card { position: relative; width: min(440px, 100%); margin-inline-start: clamp(0px, 7vw, 120px); padding: var(--s6); background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-2); animation: pop .5s var(--spring); }
+.welcome-card h1 { font: 400 var(--text-hero)/1.1 var(--font-display); color: var(--clay); margin-block-end: var(--s3); }
+.welcome-card p { color: var(--muted); font-size: 1.125rem; margin-block-end: var(--s5); }
+.welcome-card .btn { width: 100%; }
+.welcome-card .who { direction: ltr; unicode-bidi: isolate; font-weight: 600; color: var(--ink); }
+.google-mark { width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px; }
+.welcome-error { color: var(--danger) !important; font-size: var(--text-sm) !important; margin-block: var(--s3) 0 !important; }
+@media (min-width: 900px) { .welcome-scene { inset-inline-start: 0; inset-inline-end: -32vw; } .welcome-card { margin-inline-start: 4vw; } }
+@media (max-width: 640px) { .welcome { align-items: flex-end; padding: var(--s4); } .welcome-card { margin: 0; padding: var(--s5); } }
+.loading { height: 100%; display: grid; place-items: center; font: 400 var(--text-xl) var(--font-display); color: var(--clay); }

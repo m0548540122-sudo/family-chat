@@ -1,0 +1,24 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 var(--text-md)/1.5 var(--font-body); -webkit-font-smoothing: antialiased; overflow: hidden; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s5); border-radius: var(--r-full); font-weight: 600; transition: background .18s var(--ease), transform .18s var(--spring); }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--clay); color: var(--on-clay); }
+.btn-primary:hover { background: var(--clay-hover); }
+.btn-quiet { background: var(--clay-soft); color: var(--ink); }
+.btn:disabled { opacity: .55; cursor: default; }
+.icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--r-full); color: var(--muted); flex: none; transition: background .18s var(--ease), color .18s var(--ease); }
+.icon-btn:hover { background: var(--clay-soft); color: var(--ink); }
+.icon-btn svg { width: 22px; height: 22px; }
+
+.avatar { position: relative; display: grid; place-items: center; width: var(--size, 44px); height: var(--size, 44px); border-radius: 38% 38% 44% 44%; color: #fff; font-weight: 700; flex: none; overflow: hidden; font-size: calc(var(--size, 44px) * .4); }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.field { display: block; width: 100%; min-height: 44px; padding: var(--s2) var(--s4); background: var(--raised); border: 1px solid var(--line); border-radius: var(--r-md); }
+.toast { position: fixed; inset-block-end: var(--s6); inset-inline: var(--s4); margin-inline: auto; width: fit-content; max-width: 480px; background: var(--ink); color: var(--paper); padding: var(--s3) var(--s5); border-radius: var(--r-md); z-index: 50; animation: pop .25s var(--spring); }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
