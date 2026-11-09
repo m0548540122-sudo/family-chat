@@ -30,13 +30,13 @@ export function openAdmin(backend) {
   function add(event) {
     event.preventDefault();
     const value = email.value.trim().toLowerCase();
-    if (!isEmail(value)) { toast('צריך כתובת Gmail תקינה.'); return; }
+    if (!isEmail(value)) { toast('צריך כתובת ג׳ימייל תקינה.'); return; }
     act(async () => { await backend.addAllowed(value, name.value.trim()); email.value = ''; name.value = ''; }, 'לא הצלחתי להוסיף. אולי הכתובת כבר ברשימה?');
   }
 
   openSheet('ניהול המשפחה', [
     h('form', { class: 'add-form', onsubmit: add },
-      h('div', { class: 'form-row' }, h('label', { htmlFor: 'new-email' }, 'כתובת Google של בן המשפחה'), email),
+      h('div', { class: 'form-row' }, h('label', { htmlFor: 'new-email' }, 'כתובת הג׳ימייל של בן המשפחה'), email),
       h('div', { class: 'form-row' }, h('label', { htmlFor: 'new-name' }, 'שם (לא חובה)'), name),
       h('button', { class: 'btn btn-primary', type: 'submit' }, 'הוספה למשפחה')),
     list,

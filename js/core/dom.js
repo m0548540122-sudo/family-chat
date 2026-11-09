@@ -25,6 +25,9 @@ export function replace(el, ...children) {
 }
 
 const ICONS = {
+  smile: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.500 14.500c1 1.300 2.100 2 3.500 2s2.500-.7 3.500-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="10" r="1.300" fill="currentColor"/><circle cx="15" cy="10" r="1.300" fill="currentColor"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  search: '<circle cx="10.500" cy="10.500" r="6.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.500 15.500 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   send: '<path d="M4 12 20 4l-4 16-4-7z" fill="currentColor"/>',
   clip: '<path d="m20 11-8.5 8.5a5 5 0 0 1-7-7L13 4a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   back: '<path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',

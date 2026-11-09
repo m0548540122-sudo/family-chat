@@ -1,0 +1,11 @@
+{
+  "name": "הבית שלנו",
+  "short_name": "הבית שלנו",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FBF4E9",
+  "theme_color": "#BF4A27",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

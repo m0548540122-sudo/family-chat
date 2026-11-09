@@ -30,7 +30,7 @@ export function loginScreen(backend) {
         error.textContent = 'הכניסה לא הצליחה. נסו שוב בעוד רגע.';
       }
     },
-  }, googleMark(), 'כניסה עם חשבון Google');
+  }, googleMark(), 'כניסה עם חשבון גוגל');
   return layout(h('h1', {}, config.appName), h('p', {}, 'המקום של המשפחה שלנו. נכנסים, ומרגישים בבית.'), button, error);
 }
 

@@ -7,12 +7,14 @@ export function createSupabaseBackend() {
   });
   const must = ({ data, error }) => { if (error) throw error; return data; };
   let presence = null;
+  let live = null;
+  const broadcast = (event, payload) => live?.send({ type: 'broadcast', event, payload });
 
   return {
     async getUser() { return (await db.auth.getSession()).data.session?.user ?? null; },
     signIn: () => db.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: 'select_account' } },
+      options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: 'select_account', hl: 'he' } },
     }),
     async signOut() { if (presence) await db.removeChannel(presence); await db.auth.signOut(); },
 
@@ -56,6 +58,23 @@ export function createSupabaseBackend() {
       presence = db.channel('family-online', { config: { presence: { key: userId } } });
       presence.on('presence', { event: 'sync' }, () => callback(new Set(Object.keys(presence.presenceState()))));
       presence.subscribe((status) => { if (status === 'SUBSCRIBED') presence.track({ at: Date.now() }); });
+    },
+
+    joinLive({ onTyping, onReaction }) {
+      live = db.channel('family-live')
+        .on('broadcast', { event: 'typing' }, ({ payload }) => onTyping(payload.conversationId, payload.userId))
+        .on('broadcast', { event: 'reaction' }, ({ payload }) => onReaction(payload.messageId))
+        .subscribe();
+    },
+    sendTyping: (conversationId, userId) => broadcast('typing', { conversationId, userId }),
+    sendReactionPing: (messageId) => broadcast('reaction', { messageId }),
+    listReactions: async (ids) => must(await db.from('message_reactions').select('message_id,user_id,emoji').in('message_id', ids)),
+    addReaction: async (message_id, emoji) => must(await db.from('message_reactions').insert({ message_id, emoji })),
+    removeReaction: async (message_id, user_id, emoji) => must(await db.from('message_reactions').delete().match({ message_id, user_id, emoji })),
+    async searchMessages(conversationId, text) {
+      const safe = text.replace(/[\\%_]/g, '\\$&');
+      return must(await db.from('messages').select('id,sender_id,body,created_at').eq('conversation_id', conversationId)
+        .ilike('body', `%${safe}%`).order('created_at', { ascending: false }).limit(30));
     },
 
     updateName: async (id, name) => must(await db.from('profiles').update({ name }).eq('id', id)),

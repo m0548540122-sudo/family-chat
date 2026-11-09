@@ -17,6 +17,7 @@ export function createPracticeBackend() {
     ['p2', 'תודה יקירים, מחכה לכם', 12],
   ].map(([sender_id, body, min], i) => ({ id: `m${i}`, conversation_id: family, sender_id, body, created_at: ago(min) }));
   const allowed = people.map((p) => ({ email: p.email, display_name: p.name, is_owner: p.is_owner === true, blocked: false }));
+  const reactions = [{ message_id: 'm1', user_id: 'p2', emoji: '❤️' }];
   let listener = () => {};
   const delay = (value) => new Promise((done) => setTimeout(() => done(value), 60));
   const directs = new Map();
@@ -46,6 +47,11 @@ export function createPracticeBackend() {
     attachmentUrl: (path) => delay(practiceFiles.get(path)),
     subscribeMessages(cb) { listener = cb; return () => {}; },
     joinPresence(id, cb) { cb(new Set(['p1', 'p2', 'p4'])); },
+    joinLive() {}, sendTyping() {}, sendReactionPing() {},
+    listReactions: (ids) => delay(reactions.filter((r) => ids.includes(r.message_id))),
+    addReaction(message_id, emoji) { reactions.push({ message_id, user_id: me.id, emoji }); return delay(); },
+    removeReaction(message_id, user_id, emoji) { reactions.splice(reactions.findIndex((r) => r.message_id === message_id && r.user_id === user_id && r.emoji === emoji), 1); return delay(); },
+    searchMessages: (id, text) => delay(messages.filter((m) => m.conversation_id === id && m.body.includes(text))),
     updateName(id, name) { me.name = name; return delay(); },
     listAllowed: () => delay(allowed),
     addAllowed(email, display_name) { allowed.push({ email, display_name, is_owner: false, blocked: false }); return delay(); },
