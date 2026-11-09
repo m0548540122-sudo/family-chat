@@ -34,7 +34,7 @@ export async function createShell({ backend, me }) {
   root.append(sidebar.element, h('main', { class: 'main' }, thread.element));
   await showConversations();
   if (matchMedia('(max-width: 760px)').matches) root.dataset.view = 'list';
-  await thread.open({ id: config.familyConversationId, kind: 'family', title: 'כל המשפחה' });
+  await thread.open({ id: config.familyConversationId, kind: 'family', title: config.familyRoomName });
 
   backend.subscribeMessages((message) => { thread.receive(message); refresh(); });
   backend.joinPresence(me.id, (online) => sidebar.setOnline(online));

@@ -1,6 +1,7 @@
 // All settings live here. The anon key is public by design; access is enforced by the database.
 export const config = {
   appName: 'הבית שלנו',
+  familyRoomName: 'שבט האחים',
   supabaseUrl: 'https://ghdvhwwbgixugfnjmtnp.supabase.co',
   supabaseAnonKey: 'sb_publishable_zLORfCrM_g6wctfp8tPldw_9t_xYgtP',
   familyConversationId: '00000000-0000-4000-8000-000000000001',

@@ -39,7 +39,7 @@ export function createSidebar({ me, people, onOpen, onSettings, onAdmin }) {
     const rows = people.filter((p) => p.id !== me.id).map((person) => ({ person, row: conversations.find((c) => c.other_id === person.id) }));
     rows.sort((a, b) => (b.row?.last_at || '').localeCompare(a.row?.last_at || ''));
     replace(list,
-      item({ key: 'family', name: 'כל המשפחה', who: { id: 'family', name: '♥' }, row: family, target: { id: config.familyConversationId, kind: 'family', title: 'כל המשפחה' } }),
+      item({ key: 'family', name: config.familyRoomName, who: { id: 'family', name: '♥' }, row: family, target: { id: config.familyConversationId, kind: 'family', title: config.familyRoomName } }),
       rows.map(({ person, row }) => item({ key: person.id, name: person.name, who: person, row, target: { id: row?.id, kind: 'direct', person, title: person.name } })));
   }
 
