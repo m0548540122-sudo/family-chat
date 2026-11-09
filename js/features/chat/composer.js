@@ -10,7 +10,7 @@ export function createComposer({ onSend, onTyping }) {
   const interim = h('div', { class: 'dictation-live', hidden: true, 'aria-live': 'polite' });
   const send = h('button', { class: 'icon-btn send-btn', 'aria-label': 'שליחה', disabled: true, onclick: submit }, icon('send'));
   const input = h('textarea', {
-    rows: 1, placeholder: 'כתבו משהו למשפחה…', maxLength: config.maxMessageLength, 'aria-label': 'הודעה',
+    rows: 1, placeholder: 'כתבו הודעה…', maxLength: config.maxMessageLength, 'aria-label': 'הודעה',
     oninput: () => { refresh(); onTyping(); },
     onkeydown: (event) => {
       const desktop = matchMedia('(hover: hover)').matches;
